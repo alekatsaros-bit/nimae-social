@@ -38,7 +38,7 @@
     var f = sw.getAttribute('data-front'), b = sw.getAttribute('data-back');
     if (f && front) { front.removeAttribute('srcset'); front.src = f; }
     if (back) {
-      if (b) { back.src = b; media.classList.add('has-back'); } else { media.classList.remove('has-back'); }
+      if (b) { back.hidden = false; back.src = b; media.classList.add('has-back'); } else { back.hidden = true; media.classList.remove('has-back'); }
     } else if (b && media) {
       var im = document.createElement('img'); im.src = b; im.alt = ''; im.setAttribute('data-back', ''); im.width = 720; im.height = 900;
       media.insertBefore(im, front ? front.nextSibling : media.firstChild); media.classList.add('has-back');
