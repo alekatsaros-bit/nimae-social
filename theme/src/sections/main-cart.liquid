@@ -1,0 +1,96 @@
+{%- liquid
+  assign threshold = settings.free_shipping_cents | default: 7000
+  assign remaining = threshold | minus: cart.total_price
+  assign pct = cart.total_price | times: 100 | divided_by: threshold
+  if pct > 100
+    assign pct = 100
+  endif
+-%}
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px 8px;display:flex;flex-direction:column;gap:12px">
+  <nav class="crumbs" aria-label="Διαδρομή"><a href="{{ routes.root_url }}">Αρχική</a> / Καλάθι</nav>
+  <h1 class="h1">{% if cart.item_count > 0 %}Το καλάθι σας ({{ cart.item_count }}){% else %}Το καλάθι σας{% endif %}</h1>
+</section>
+
+<section class="wrap-m" style="padding:16px 20px 56px">
+  {%- if cart.item_count == 0 -%}
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:40px 0">
+      <p class="muted" style="margin:0">Το καλάθι σας είναι άδειο.</p>
+      <a href="/collections/all" class="btn">Δείτε τα ρούχα</a>
+    </div>
+  {%- else -%}
+  <form action="{{ routes.cart_url }}" method="post" id="cart-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(24px,4vw,56px);align-items:start">
+    <div style="display:flex;flex-direction:column;border-top:1px solid var(--line)">
+      {%- for item in cart.items -%}
+        {%- liquid
+          assign img = nil
+          if item.variant.featured_media
+            assign img = item.variant.featured_media.preview_image
+          else
+            for m in item.product.media
+              assign src = m.preview_image.src | default: ''
+              unless src contains 'nimae-model'
+                assign img = m.preview_image
+                break
+              endunless
+            endfor
+          endif
+          assign nm = item.product.title | split: ', ' | first
+          assign sb = item.product.title | remove_first: nm | remove_first: ', '
+        -%}
+        <div style="display:grid;grid-template-columns:clamp(96px,22vw,140px) 1fr;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)">
+          <a href="{{ item.url }}">{%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ nm | escape }}, {{ item.variant.title | escape }}" width="400" height="500" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:var(--bg2);display:block">{%- endif -%}</a>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><a href="{{ item.url }}" style="font-weight:500">{{ nm }}</a><span>{{ item.final_line_price | money }}</span></div>
+            {%- if sb != blank -%}<span class="muted" style="font-size:14px">{{ sb }}</span>{%- endif -%}
+            {%- unless item.product.has_only_default_variant -%}<span class="muted" style="font-size:14px">{{ item.variant.title }}</span>{%- endunless -%}
+            {%- if item.quantity > 1 -%}<span class="muted" style="font-size:13px">{{ item.final_price | money }} το τεμάχιο</span>{%- endif -%}
+            <div style="margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <div class="qty" data-qty>
+                <button type="button" aria-label="Μείωση ποσότητας" data-step="-1">−</button>
+                <label for="qty-{{ forloop.index }}" class="visually-hidden">Ποσότητα</label>
+                <input id="qty-{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
+                <button type="button" aria-label="Αύξηση ποσότητας" data-step="1">+</button>
+              </div>
+              <a href="{{ item.url_to_remove }}" style="min-height:44px;display:inline-flex;align-items:center;font-size:14px;text-decoration:underline">Αφαίρεση</a>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+      <noscript><button type="submit" name="update" class="btn btn--ghost" style="margin-top:16px">Ενημέρωση καλαθιού</button></noscript>
+      <a href="/collections/all" style="margin-top:20px;font-size:14px;font-weight:500;text-decoration:underline">Συνέχεια αγορών</a>
+    </div>
+
+    <aside style="background:var(--bg2);border-radius:4px;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:16px;position:sticky;top:120px">
+      <h2 class="serif" style="margin:0;font-size:24px;line-height:30px">Σύνοψη</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:14px">{% if remaining > 0 %}Προσθέστε {{ remaining | money }} ακόμα για δωρεάν αποστολή.{% else %}Η αποστολή σας είναι δωρεάν.{% endif %}</span>
+        <span class="bar"><span style="width:{{ pct }}%"></span></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:15px"><span>Υποσύνολο</span><span>{{ cart.total_price | money }}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:15px"><span>Αποστολή</span><span>{% if remaining > 0 %}Στο επόμενο βήμα{% else %}Δωρεάν{% endif %}</span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);font-size:18px;font-weight:500"><span>Σύνολο</span><span>{{ cart.total_price | money }}</span></div>
+      <p class="muted" style="margin:0;font-size:13px;line-height:20px">Εκπτωτικό κωδικό, αν έχετε, βάζετε στο επόμενο βήμα.</p>
+      <button type="submit" name="checkout" class="btn btn--clay" style="min-height:52px">Ολοκλήρωση αγοράς</button>
+      <ul class="muted" style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px">
+        <li>Παράδοση σε 5 έως 12 εργάσιμες σε όλη την Ελλάδα</li>
+        <li>Κάρτα, Apple Pay, Google Pay, IRIS ή κατάθεση σε τράπεζα. Δεν προσφέρεται αντικαταβολή</li>
+        <li>14 ημέρες για υπαναχώρηση. <a href="/pages/voitheia#returns" style="text-decoration:underline">Πώς λειτουργεί</a></li>
+      </ul>
+    </aside>
+  </form>
+  {%- endif -%}
+</section>
+
+{%- assign recs = section.settings.collection -%}
+{%- if recs and recs.products.size > 0 -%}
+<section class="wrap-m" style="padding:0 0 64px">
+  <h2 class="h2" style="padding:0 20px;margin-bottom:20px">Μπορεί να σας αρέσουν</h2>
+  <div class="scroller">{%- for product in recs.products limit: 6 -%}{% render 'product-card', product: product %}{%- endfor -%}</div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Καλάθι",
+  "settings": [{ "type": "collection", "id": "collection", "label": "Προτάσεις από συλλογή" }]
+}
+{% endschema %}

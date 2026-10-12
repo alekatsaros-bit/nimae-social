@@ -1,0 +1,11 @@
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px 56px;display:flex;flex-direction:column;gap:20px">
+  <h1 class="h1">Συλλογές</h1>
+  <div class="grid">
+    {%- for c in collections -%}
+      <a href="{{ c.url }}" class="card"><span class="card__media">{%- if c.image -%}{{ c.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: c.title }}{%- endif -%}</span><span class="card__name">{{ c.title }}</span><span class="card__sub">{{ c.products_count }} προϊόντα</span></a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Συλλογές", "settings": [] }
+{% endschema %}

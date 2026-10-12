@@ -1,0 +1,60 @@
+{%- assign email = settings.contact_email -%}
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:12px">
+  <nav class="crumbs" aria-label="Διαδρομή"><a href="{{ routes.root_url }}">Αρχική</a> / Επικοινωνία</nav>
+  <h1 class="h1">Επικοινωνία</h1>
+  <p class="muted" style="margin:0;max-width:620px">Γράψτε μας για μια παραγγελία, ένα μέγεθος ή οτιδήποτε άλλο. Απαντάμε εντός 2 εργάσιμων ημερών.</p>
+</section>
+<section class="wrap-m" style="padding:0 20px clamp(48px,8vw,80px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,64px);align-items:start">
+  <div>
+    {%- form 'contact', id: 'contact-form', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <div role="status" style="display:flex;flex-direction:column;gap:8px;padding:24px;background:var(--bg2);border-radius:4px">
+          <span class="serif" style="font-size:24px;line-height:30px">Ευχαριστούμε, λάβαμε το μήνυμά σας.</span>
+          <span class="muted">Θα σας απαντήσουμε στο email σας εντός 2 εργάσιμων ημερών.</span>
+          <a href="/pages/contact" class="btn btn--ghost" style="align-self:flex-start;margin-top:8px">Νέο μήνυμα</a>
+        </div>
+      {%- else -%}
+        {%- if form.errors -%}<p role="alert" class="notice notice--error">Ελέγξτε τα πεδία: {{ form.errors | default_errors }}</p>{%- endif -%}
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+          <label class="field">Ονοματεπώνυμο<input class="input" type="text" name="contact[Ονοματεπώνυμο]" autocomplete="name" required></label>
+          <label class="field">Email<input class="input" type="email" name="contact[email]" autocomplete="email" required></label>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+          <label class="field"><span>Αριθμός παραγγελίας <span class="muted" style="font-weight:400;font-size:13px">(προαιρετικό)</span></span><input class="input" type="text" name="contact[Αριθμός παραγγελίας]" placeholder="#1001"></label>
+          <label class="field">Θέμα<select class="input" name="contact[Θέμα]"><option>Παραγγελία</option><option>Επιστροφή</option><option>Μέγεθος</option><option>Εταιρική παραγγελία</option><option>Άλλο</option></select></label>
+        </div>
+        <label class="field">Μήνυμα<textarea class="input" name="contact[body]" rows="6" required></textarea></label>
+        <button type="submit" class="btn" style="align-self:flex-start">Αποστολή μηνύματος</button>
+        <p class="muted" style="margin:0;font-size:13px">Χρησιμοποιούμε τα στοιχεία σας μόνο για να σας απαντήσουμε. <a href="/pages/nomika#privacy" style="text-decoration:underline">Πολιτική απορρήτου</a></p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+  <aside style="display:flex;flex-direction:column;gap:28px">
+    {%- if email != blank -%}
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="eyebrow" style="color:var(--olive)">Email</span>
+      <a href="mailto:{{ email }}" class="serif" style="font-size:28px;line-height:34px;text-decoration:underline;word-break:break-word">{{ email }}</a>
+      <span class="muted" style="font-size:14px">Απαντάμε εντός 2 εργάσιμων ημερών.</span>
+    </div>
+    {%- endif -%}
+    <div style="display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid var(--line)">
+      <span style="font-weight:500">Γρήγορες απαντήσεις</span>
+      <a href="/pages/voitheia#shipping" style="text-decoration:underline;font-size:15px">Πότε θα φτάσει η παραγγελία μου;</a>
+      <a href="/pages/nomika#withdrawal" style="text-decoration:underline;font-size:15px">Θέλω να επιστρέψω ένα ρούχο</a>
+      <a href="/pages/megethi" style="text-decoration:underline;font-size:15px">Ποιο μέγεθος να διαλέξω;</a>
+    </div>
+    <div id="company" style="display:flex;flex-direction:column;gap:8px;padding:24px;background:var(--forest);color:var(--bg);border-radius:4px">
+      <span class="eyebrow">Για εταιρείες</span>
+      <span class="serif" style="font-size:24px;line-height:30px">Εταιρικές παραγγελίες</span>
+      <span style="font-size:15px;color:var(--line)">Για παραγγελίες ομάδων, εταιρειών ή χονδρικής, γράψτε μας ποια κομμάτια, πόσα τεμάχια και ποια μεγέθη χρειάζεστε. Οι όροι συμφωνούνται χωριστά για κάθε παραγγελία.</span>
+      {%- if email != blank -%}<a href="mailto:{{ email }}" style="color:var(--bg);text-decoration:underline;font-size:15px;margin-top:4px">{{ email }}</a>{%- endif -%}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;font-size:14px" class="muted">
+      <span style="font-weight:500;color:var(--ink)">Στοιχεία επιχείρησης</span>
+      <a href="/pages/nomika#company" style="text-decoration:underline">Δείτε τα στοιχεία της επιχείρησης</a>
+    </div>
+  </aside>
+</section>
+{% schema %}
+{ "name": "Επικοινωνία", "settings": [] }
+{% endschema %}

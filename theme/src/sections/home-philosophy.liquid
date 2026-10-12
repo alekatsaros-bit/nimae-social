@@ -1,0 +1,17 @@
+<section style="max-width:760px;margin:0 auto;padding:clamp(48px,8vw,80px) 20px 0;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center">
+  <span class="eyebrow muted">{{ section.settings.eyebrow }}</span>
+  <p class="serif" style="margin:0;font-weight:400;font-size:clamp(22px,4vw,28px);line-height:1.35">{{ section.settings.text }}</p>
+  {%- if section.settings.cta != blank -%}<a href="{{ section.settings.link | default: '/pages/istoria' }}" class="link">{{ section.settings.cta }}</a>{%- endif -%}
+</section>
+{% schema %}
+{
+  "name": "Φιλοσοφία",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Μικρή επικεφαλίδα", "default": "Η φιλοσοφία μας" },
+    { "type": "textarea", "id": "text", "label": "Κείμενο", "default": "Ρούχα για κάθε μέρα, από βιολογικό βαμβάκι και ανακυκλωμένα υλικά, με το ν να μπαίνει στο ρούχο μόνο όταν το παραγγείλετε." },
+    { "type": "text", "id": "cta", "label": "Σύνδεσμος: κείμενο", "default": "Μάθετε περισσότερα" },
+    { "type": "url", "id": "link", "label": "Σύνδεσμος" }
+  ],
+  "presets": [{ "name": "Φιλοσοφία" }]
+}
+{% endschema %}

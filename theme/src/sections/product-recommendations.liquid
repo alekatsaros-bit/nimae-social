@@ -1,0 +1,12 @@
+<section class="wrap-m" style="padding:48px 0" data-recs data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <h2 class="serif" style="margin:0 0 20px;padding:0 20px;font-size:28px;line-height:34px">{{ section.settings.heading }}</h2>
+    <div class="scroller">{%- for product in recommendations.products -%}{% render 'product-card', product: product %}{%- endfor -%}</div>
+  {%- endif -%}
+</section>
+{% schema %}
+{
+  "name": "Προτάσεις",
+  "settings": [{ "type": "text", "id": "heading", "label": "Τίτλος", "default": "Ταιριάζει με" }]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+<div style="border-bottom:1px solid var(--line)">
+  <div class="wrap" style="padding:12px 20px;display:flex;gap:28px;overflow-x:auto;white-space:nowrap;justify-content:safe center;font-size:13px;color:var(--muted)">
+    {%- for block in section.blocks -%}<span style="flex:0 0 auto" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{%- endfor -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Σημεία εμπιστοσύνης",
+  "blocks": [{ "type": "item", "name": "Σημείο", "settings": [{ "type": "text", "id": "text", "label": "Κείμενο", "default": "Βιολογικό βαμβάκι" }] }],
+  "presets": [{ "name": "Σημεία εμπιστοσύνης" }]
+}
+{% endschema %}

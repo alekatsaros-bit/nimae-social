@@ -1,0 +1,27 @@
+{%- assign st = 'width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;background:#EEE8DC;display:block' -%}
+<section class="wrap" style="padding:clamp(40px,7vw,64px) 0 0">
+  <div class="scroller">
+    {%- for block in section.blocks -%}
+    <a href="{{ block.settings.link | default: '/pages/istoria' }}" style="flex:1 0 clamp(220px,62%,320px);display:flex;flex-direction:column;gap:8px" {{ block.shopify_attributes }}>
+      {% render 'section-image', image: block.settings.image, fallback: block.settings.fallback, alt: '', style: st, sizes: '320px' %}
+      <span class="serif" style="font-weight:400;font-size:22px;line-height:28px">{{ block.settings.label }}</span>
+      <span style="font-size:14px;text-decoration:underline">Διαβάστε</span>
+    </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Οδηγοί",
+  "blocks": [{
+    "type": "guide", "name": "Οδηγός",
+    "settings": [
+      { "type": "text", "id": "label", "label": "Τίτλος", "default": "Υλικά" },
+      { "type": "url", "id": "link", "label": "Σύνδεσμος" },
+      { "type": "image_picker", "id": "image", "label": "Εικόνα" },
+      { "type": "text", "id": "fallback", "label": "Εναλλακτική εικόνα θέματος" }
+    ]
+  }],
+  "presets": [{ "name": "Οδηγοί" }]
+}
+{% endschema %}

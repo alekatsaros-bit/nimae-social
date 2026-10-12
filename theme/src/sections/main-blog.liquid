@@ -1,0 +1,16 @@
+<section style="max-width:900px;margin:0 auto;padding:clamp(24px,5vw,48px) 20px 56px;display:flex;flex-direction:column;gap:24px">
+  <h1 class="h1">{{ blog.title }}</h1>
+  {%- paginate blog.articles by 12 -%}
+    {%- for article in blog.articles -%}
+      <article style="display:flex;flex-direction:column;gap:6px;padding-bottom:20px;border-bottom:1px solid var(--line)">
+        <a href="{{ article.url }}" class="serif" style="font-size:26px;line-height:32px">{{ article.title }}</a>
+        <span class="muted" style="font-size:13px">{{ article.published_at | date: '%d/%m/%Y' }}</span>
+        <p class="muted" style="margin:0">{{ article.excerpt_or_content | strip_html | truncatewords: 40 }}</p>
+      </article>
+    {%- endfor -%}
+    {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "Blog", "settings": [] }
+{% endschema %}

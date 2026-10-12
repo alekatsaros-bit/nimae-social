@@ -1,0 +1,10 @@
+<section style="max-width:520px;margin:0 auto;padding:clamp(32px,6vw,64px) 20px;display:flex;flex-direction:column;gap:16px">
+  <h1 class="h1">Ο λογαριασμός μου</h1>
+  <p>{{ customer.first_name }} {{ customer.last_name }} · {{ customer.email }}</p>
+  <h2 class="h2">Παραγγελίες</h2>
+  {%- if customer.orders.size > 0 -%}
+    {%- for order in customer.orders -%}<p><a class="link" href="{{ order.customer_url }}">{{ order.name }}</a> · {{ order.created_at | date: '%d/%m/%Y' }} · {{ order.total_price | money }} · {{ order.fulfillment_status_label }}</p>{%- endfor -%}
+  {%- else -%}<p class="muted">Δεν υπάρχουν παραγγελίες ακόμα.</p>{%- endif -%}
+  <a class="link" href="{{ routes.account_addresses_url }}">Διευθύνσεις</a>
+  <a class="link" href="{{ routes.account_logout_url }}">Αποσύνδεση</a>
+</section>

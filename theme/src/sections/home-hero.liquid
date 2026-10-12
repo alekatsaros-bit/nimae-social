@@ -1,0 +1,35 @@
+<section style="background:var(--bg2);display:flex;flex-wrap:wrap-reverse;align-items:center">
+  <div style="flex:1 1 360px;min-width:0;padding:clamp(28px,6vw,72px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:20px">
+    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow" style="color:var(--olive)">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="serif" style="margin:0;max-width:560px;font-size:clamp(42px,8vw,72px);line-height:1.05">{{ section.settings.heading | newline_to_br }}</h1>
+    {%- if section.settings.text != blank -%}<p class="muted" style="margin:0;max-width:420px">{{ section.settings.text }}</p>{%- endif -%}
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:400px">
+      {%- if section.settings.btn1_label != blank -%}<a class="btn" href="{{ section.settings.btn1_link | default: '/collections/gynaikeia' }}">{{ section.settings.btn1_label }}</a>{%- endif -%}
+      {%- if section.settings.btn2_label != blank -%}<a class="btn" href="{{ section.settings.btn2_link | default: '/collections/andrika' }}">{{ section.settings.btn2_label }}</a>{%- endif -%}
+    </div>
+  </div>
+  <a href="{{ section.settings.image_link | default: '/collections/all' }}" style="flex:1.4 1 480px;min-width:0;display:block" tabindex="-1" aria-hidden="true">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 1800 | image_tag: widths: '600,900,1200,1800', sizes: '(min-width: 900px) 60vw, 100vw', alt: section.settings.image.alt, style: 'width:100%;aspect-ratio:8/5;object-fit:cover;display:block', fetchpriority: 'high' }}
+    {%- else -%}
+      <img src="{{ 'hero-pair.jpg' | asset_url }}" alt="" width="1600" height="1000" style="width:100%;aspect-ratio:8/5;object-fit:cover;display:block" fetchpriority="high">
+    {%- endif -%}
+  </a>
+</section>
+{% schema %}
+{
+  "name": "Κεντρική εικόνα",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Επικεφαλίδα μικρή", "default": "Φθινόπωρο 2026" },
+    { "type": "textarea", "id": "heading", "label": "Τίτλος", "default": "Απλά ρούχα.\nΈνα μικρό ν." },
+    { "type": "textarea", "id": "text", "label": "Κείμενο", "default": "T-shirts, φούτερ και μπουφάν από βιολογικό βαμβάκι, για γυναίκες, άνδρες και παιδιά." },
+    { "type": "text", "id": "btn1_label", "label": "Κουμπί 1", "default": "Γυναικεία" },
+    { "type": "url", "id": "btn1_link", "label": "Σύνδεσμος 1" },
+    { "type": "text", "id": "btn2_label", "label": "Κουμπί 2", "default": "Ανδρικά" },
+    { "type": "url", "id": "btn2_link", "label": "Σύνδεσμος 2" },
+    { "type": "image_picker", "id": "image", "label": "Εικόνα (χωρίς πρόσωπα από AI)" },
+    { "type": "url", "id": "image_link", "label": "Σύνδεσμος εικόνας" }
+  ],
+  "presets": [{ "name": "Κεντρική εικόνα" }]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+<section style="max-width:520px;margin:0 auto;padding:clamp(32px,6vw,64px) 20px;display:flex;flex-direction:column;gap:16px">
+  <a class="link" href="{{ routes.account_url }}">Πίσω στον λογαριασμό</a>
+  <h1 class="h1">Διευθύνσεις</h1>
+  {%- for address in customer.addresses -%}<div class="notice">{{ address | format_address }}</div>{%- endfor -%}
+  {%- form 'customer_address', customer.new_address, class: 'contact-form' -%}
+    <label class="field">Όνομα<input class="input" name="address[first_name]" value="{{ form.first_name }}"></label>
+    <label class="field">Επώνυμο<input class="input" name="address[last_name]" value="{{ form.last_name }}"></label>
+    <label class="field">Διεύθυνση<input class="input" name="address[address1]" value="{{ form.address1 }}"></label>
+    <label class="field">Πόλη<input class="input" name="address[city]" value="{{ form.city }}"></label>
+    <label class="field">ΤΚ<input class="input" name="address[zip]" value="{{ form.zip }}"></label>
+    <input type="hidden" name="address[country]" value="Greece">
+    <label class="field">Τηλέφωνο<input class="input" name="address[phone]" value="{{ form.phone }}"></label>
+    <button class="btn" type="submit">Προσθήκη διεύθυνσης</button>
+  {%- endform -%}
+</section>

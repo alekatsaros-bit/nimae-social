@@ -1,0 +1,23 @@
+<section style="margin-top:clamp(40px,7vw,72px);background:var(--night);display:flex;flex-wrap:wrap-reverse">
+  <div style="flex:1 1 360px;min-width:0;padding:clamp(32px,6vw,72px) clamp(20px,5vw,64px);display:flex;flex-direction:column;justify-content:center;gap:16px;color:var(--bg)">
+    <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+    <h2 class="serif" style="margin:0;max-width:460px;font-size:clamp(36px,6vw,56px);line-height:1.08">{{ section.settings.heading }}</h2>
+    <p style="margin:0;max-width:380px">{{ section.settings.text }}</p>
+    {%- if section.settings.cta != blank -%}<a href="{{ section.settings.link | default: '/pages/istoria' }}" class="btn btn--light" style="align-self:flex-start;margin-top:8px">{{ section.settings.cta }}</a>{%- endif -%}
+  </div>
+  {% render 'section-image', image: section.settings.image, fallback: 'mark-nu.jpg', alt: 'Κοντινό του σήματος ν στο στήθος ενός μαύρου φούτερ', style: 'flex:1.4 1 420px;min-width:0;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:60% 50%;display:block', sizes: '60vw' %}
+</section>
+{% schema %}
+{
+  "name": "Το σήμα",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Μικρή επικεφαλίδα", "default": "Το σήμα" },
+    { "type": "text", "id": "heading", "label": "Τίτλος", "default": "Ένα γράμμα αρκεί." },
+    { "type": "textarea", "id": "text", "label": "Κείμενο", "default": "Το ν είναι το πρώτο γράμμα του ονόματός μας, γραμμένο στα ελληνικά. Μικρό, αριστερά στο στήθος, σε κάθε κομμάτι." },
+    { "type": "text", "id": "cta", "label": "Κουμπί", "default": "Η ιστορία μας" },
+    { "type": "url", "id": "link", "label": "Σύνδεσμος" },
+    { "type": "image_picker", "id": "image", "label": "Εικόνα" }
+  ],
+  "presets": [{ "name": "Το σήμα" }]
+}
+{% endschema %}

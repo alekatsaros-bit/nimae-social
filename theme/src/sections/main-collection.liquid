@@ -1,0 +1,66 @@
+{%- liquid
+  assign intro = collection.description | strip_html | strip
+  if intro == blank
+    case collection.handle
+      when 'all'
+        assign intro = 'Όλα τα ρούχα μας, από βιολογικό βαμβάκι και ανακυκλωμένα υλικά, με το ν στο στήθος.'
+      when 'gynaikeia'
+        assign intro = 'Γυναικεία και unisex κομμάτια για κάθε μέρα.'
+      when 'andrika'
+        assign intro = 'Ανδρικά και unisex κομμάτια για κάθε μέρα.'
+      when 'paidika'
+        assign intro = 'Τα ίδια υλικά, σε μικρά μεγέθη.'
+    endcase
+  endif
+  assign title = collection.title
+  if collection.handle == 'all'
+    assign title = 'Όλα τα ρούχα'
+  endif
+-%}
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px 20px;display:flex;flex-direction:column;gap:12px">
+  <nav class="crumbs" aria-label="Διαδρομή"><a href="{{ routes.root_url }}">Αρχική</a> / {{ title }}</nav>
+  <h1 class="h1">{{ title }}</h1>
+  {%- if intro != blank -%}<p class="muted" style="margin:0;max-width:560px">{{ intro }}</p>{%- endif -%}
+</section>
+
+{%- paginate collection.products by 250 -%}
+<div data-collection>
+  <section class="wrap-m">
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:4px 20px 12px" role="group" aria-label="Κατηγορία">
+      <button type="button" class="pill" aria-pressed="true" data-kind-filter="all">Όλα</button>
+      <button type="button" class="pill" aria-pressed="false" data-kind-filter="fouter">Φούτερ</button>
+      <button type="button" class="pill" aria-pressed="false" data-kind-filter="tops">T-shirts και μπλούζες</button>
+      <button type="button" class="pill" aria-pressed="false" data-kind-filter="shirts">Πουκάμισα</button>
+      <button type="button" class="pill" aria-pressed="false" data-kind-filter="pants">Παντελόνια και σορτς</button>
+      <button type="button" class="pill" aria-pressed="false" data-kind-filter="jackets">Μπουφάν</button>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:0 20px 4px;align-items:center" role="group" aria-label="Ταξινόμηση">
+      <span style="flex:0 0 auto;font-size:13px;color:var(--muted);margin-right:4px">Ταξινόμηση</span>
+      <button type="button" class="pill" aria-pressed="true" data-sort="feat">Προτεινόμενα</button>
+      <button type="button" class="pill" aria-pressed="false" data-sort="new">Νεότερα</button>
+      <button type="button" class="pill" aria-pressed="false" data-sort="up">Τιμή αύξουσα</button>
+      <button type="button" class="pill" aria-pressed="false" data-sort="down">Τιμή φθίνουσα</button>
+    </div>
+    <p style="margin:16px 20px 0;font-size:14px;color:var(--muted)" data-count aria-live="polite">{{ collection.products_count }} προϊόντα</p>
+  </section>
+  <section class="wrap-m" style="padding:20px 20px 48px">
+    <div class="grid" data-grid>
+      {%- for product in collection.products -%}{% render 'product-card', product: product, index: forloop.index %}{%- endfor -%}
+    </div>
+    {%- if collection.products.size == 0 -%}<p class="muted">Δεν υπάρχουν ακόμα προϊόντα εδώ.</p>{%- endif -%}
+    <p class="muted" data-empty hidden>Δεν υπάρχουν προϊόντα σε αυτή την κατηγορία.</p>
+    {%- if paginate.pages > 1 -%}<div style="margin-top:32px;text-align:center">{{ paginate | default_pagination }}</div>{%- endif -%}
+  </section>
+</div>
+{%- endpaginate -%}
+
+<section class="wrap-m" style="margin-bottom:56px;padding:0 20px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;font-size:14px">
+    <a href="/pages/voitheia#shipping" style="padding:20px;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Δωρεάν αποστολή από 70 €</span><span class="muted">Παράδοση σε 5 έως 12 εργάσιμες.</span></a>
+    <a href="/pages/nomika#withdrawal" style="padding:20px;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">14 ημέρες για επιστροφή</span><span class="muted">Χωρίς να δώσετε αιτιολογία.</span></a>
+    <a href="/pages/megethi" style="padding:20px;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Οδηγός μεγεθών</span><span class="muted">Διαστάσεις για κάθε κομμάτι.</span></a>
+  </div>
+</section>
+{% schema %}
+{ "name": "Συλλογή", "settings": [] }
+{% endschema %}

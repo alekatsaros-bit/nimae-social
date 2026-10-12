@@ -1,0 +1,18 @@
+<section style="max-width:520px;margin:0 auto;padding:clamp(32px,6vw,64px) 20px;display:flex;flex-direction:column;gap:16px">
+  <h1 class="h1">Σύνδεση</h1>
+  {%- form 'customer_login', class: 'contact-form' -%}
+    {{ form.errors | default_errors }}
+    <label class="field">Email<input class="input" type="email" name="customer[email]" autocomplete="email" required></label>
+    <label class="field">Κωδικός<input class="input" type="password" name="customer[password]" autocomplete="current-password" required></label>
+    <button class="btn" type="submit">Σύνδεση</button>
+    <a href="#recover" class="link">Ξεχάσατε τον κωδικό;</a>
+  {%- endform -%}
+  <div id="recover">
+  {%- form 'recover_customer_password', class: 'contact-form' -%}
+    {%- if form.posted_successfully? -%}<p role="status">Σας στείλαμε email για νέο κωδικό.</p>{%- endif -%}
+    <label class="field">Email για νέο κωδικό<input class="input" type="email" name="email" autocomplete="email"></label>
+    <button class="btn btn--ghost" type="submit">Αποστολή</button>
+  {%- endform -%}
+  </div>
+  <a href="{{ routes.account_register_url }}" class="link">Δημιουργία λογαριασμού</a>
+</section>

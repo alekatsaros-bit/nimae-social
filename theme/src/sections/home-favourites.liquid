@@ -1,0 +1,41 @@
+{%- assign sid = section.id -%}
+<section class="wrap" style="padding:clamp(40px,7vw,72px) 0 0" data-tabs>
+  <div style="padding:0 20px;display:flex;flex-direction:column;gap:16px;margin-bottom:20px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+      <h2 class="h2">{{ section.settings.heading }}</h2>
+      <a href="/collections/all" class="link" style="flex:0 0 auto">Δείτε όλα</a>
+    </div>
+    <div role="tablist" aria-label="Φίλτρο αγαπημένων" style="display:flex;gap:8px;overflow-x:auto">
+      {%- for block in section.blocks -%}
+        <button type="button" class="pill" role="tab" id="tab-{{ sid }}-{{ forloop.index }}" aria-controls="panel-{{ sid }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- for block in section.blocks -%}
+    {%- assign c = block.settings.collection -%}
+    {%- if c == blank -%}{%- assign c = collections.all -%}{%- endif -%}
+    <div class="scroller" role="tabpanel" id="panel-{{ sid }}-{{ forloop.index }}" aria-labelledby="tab-{{ sid }}-{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
+      {%- if block.settings.newest -%}
+        {%- assign plist = c.products | sort: 'created_at' | reverse -%}
+      {%- else -%}
+        {%- assign plist = c.products -%}
+      {%- endif -%}
+      {%- for product in plist limit: 8 -%}{% render 'product-card', product: product %}{%- endfor -%}
+    </div>
+  {%- endfor -%}
+</section>
+{% schema %}
+{
+  "name": "Αγαπημένα",
+  "settings": [{ "type": "text", "id": "heading", "label": "Τίτλος", "default": "Τα αγαπημένα μας" }],
+  "blocks": [{
+    "type": "tab", "name": "Καρτέλα",
+    "settings": [
+      { "type": "text", "id": "label", "label": "Όνομα", "default": "Γυναικεία" },
+      { "type": "collection", "id": "collection", "label": "Συλλογή" },
+      { "type": "checkbox", "id": "newest", "label": "Πρώτα τα νεότερα", "default": false }
+    ]
+  }],
+  "presets": [{ "name": "Αγαπημένα" }]
+}
+{% endschema %}

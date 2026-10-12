@@ -1,0 +1,28 @@
+{%- assign st = 'width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:#EEE8DC;display:block' -%}
+<section class="wrap" style="padding:clamp(40px,7vw,72px) 0 0">
+  <h2 class="h2" style="margin:0 0 20px;padding:0 20px">{{ section.settings.heading }}</h2>
+  <div class="scroller">
+    {%- for block in section.blocks -%}
+    <a href="{{ block.settings.link | default: '/collections/all' }}" style="flex:1 0 clamp(130px,30%,200px);display:flex;flex-direction:column;gap:8px" {{ block.shopify_attributes }}>
+      {% render 'section-image', image: block.settings.image, fallback: block.settings.fallback, alt: '', style: st, sizes: '200px' %}
+      <span style="font-weight:500">{{ block.settings.label }}</span>
+    </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Ανά κατηγορία",
+  "settings": [{ "type": "text", "id": "heading", "label": "Τίτλος", "default": "Ανά κατηγορία" }],
+  "blocks": [{
+    "type": "cat", "name": "Κατηγορία",
+    "settings": [
+      { "type": "text", "id": "label", "label": "Όνομα", "default": "Φούτερ" },
+      { "type": "url", "id": "link", "label": "Σύνδεσμος" },
+      { "type": "image_picker", "id": "image", "label": "Εικόνα" },
+      { "type": "text", "id": "fallback", "label": "Εναλλακτική εικόνα θέματος" }
+    ]
+  }],
+  "presets": [{ "name": "Ανά κατηγορία" }]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+{%- liquid
+  assign p_terms = shop.terms_of_service
+  assign p_refund = shop.refund_policy
+  assign p_privacy = shop.privacy_policy
+  assign p_ship = shop.shipping_policy
+  assign p_contact = shop.policies | where: 'title', 'Στοιχεία επικοινωνίας' | first
+-%}
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:12px">
+  <nav class="crumbs" aria-label="Διαδρομή"><a href="{{ routes.root_url }}">Αρχική</a> / Νομικά</nav>
+  <h1 class="h1">Όροι και πολιτικές</h1>
+  <p class="muted" style="margin:0;max-width:620px">Οι όροι πώλησης, η πολιτική επιστροφών και υπαναχώρησης, η πολιτική απορρήτου και τα στοιχεία της επιχείρησης.</p>
+</section>
+<div style="position:sticky;top:97px;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)">
+  <div class="wrap-m" style="padding:10px 20px;display:flex;gap:8px;overflow-x:auto">
+    <a class="pill" href="#withdrawal">Υπαναχώρηση</a><a class="pill" href="#terms">Όροι πώλησης</a><a class="pill" href="#returns-policy">Επιστροφές</a><a class="pill" href="#shipping">Αποστολές</a><a class="pill" href="#privacy">Απόρρητο</a><a class="pill" href="#company">Στοιχεία επιχείρησης</a>
+  </div>
+</div>
+
+<section id="withdrawal" style="max-width:760px;margin:0 auto;padding:clamp(40px,6vw,64px) 20px 0;scroll-margin-top:160px">
+  <h2 class="h2">Υπαναχώρηση από τη σύμβαση εδώ</h2>
+  <p class="muted" style="margin:12px 0 24px">Συμπληρώστε τη φόρμα για να υπαναχωρήσετε από την αγορά σας εντός 14 ημερών από την παραλαβή. Δεν χρειάζεται λογαριασμός ούτε αιτιολογία.</p>
+  {%- form 'contact', id: 'withdrawal-form', class: 'contact-form' -%}
+    {%- if form.posted_successfully? -%}
+      <div role="status" style="display:flex;flex-direction:column;gap:8px;padding:24px;background:var(--bg2);border-radius:4px">
+        <span class="serif" style="font-size:24px;line-height:30px">Η υπαναχώρησή σας καταχωρίστηκε.</span>
+        <span class="muted">Θα σας στείλουμε επιβεβαίωση στο email σας, με τα επόμενα βήματα και τη διεύθυνση επιστροφής.</span>
+      </div>
+    {%- else -%}
+      {%- if form.errors -%}<p role="alert" class="notice notice--error">Ελέγξτε τα πεδία: {{ form.errors | default_errors }}</p>{%- endif -%}
+      <input type="hidden" name="contact[Θέμα]" value="ΥΠΑΝΑΧΩΡΗΣΗ ΑΠΟ ΤΗ ΣΥΜΒΑΣΗ">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+        <label class="field">Ονοματεπώνυμο<input class="input" type="text" name="contact[Ονοματεπώνυμο]" autocomplete="name" required></label>
+        <label class="field">Αριθμός παραγγελίας<input class="input" type="text" name="contact[Αριθμός παραγγελίας]" placeholder="#1001" required></label>
+      </div>
+      <label class="field">Email παραγγελίας<input class="input" type="email" name="contact[email]" autocomplete="email" required></label>
+      <label class="field"><span>Προϊόντα που επιστρέφετε <span class="muted" style="font-weight:400;font-size:13px">(αν δεν επιστρέφετε όλη την παραγγελία)</span></span><input class="input" type="text" name="contact[Προϊόντα]"></label>
+      <input type="hidden" name="contact[body]" value="Δηλώνω ότι υπαναχωρώ από τη σύμβαση πώλησης για την παραπάνω παραγγελία.">
+      <button type="submit" class="btn" style="align-self:flex-start">Επιβεβαίωση υπαναχώρησης</button>
+    {%- endif -%}
+  {%- endform -%}
+  {%- if p_refund -%}<div class="policy rte" id="returns-policy" style="margin-top:32px;scroll-margin-top:160px"><h2 class="h2" style="margin-bottom:12px">{{ p_refund.title }}</h2>{{ p_refund.body }}</div>{%- endif -%}
+</section>
+
+{%- if p_terms -%}<section id="terms" class="policy rte" style="max-width:760px;margin:0 auto;padding:clamp(48px,7vw,72px) 20px 0;scroll-margin-top:160px"><h2 class="h2" style="margin-bottom:12px">{{ p_terms.title }}</h2>{{ p_terms.body }}</section>{%- endif -%}
+{%- if p_ship -%}<section id="shipping" class="policy rte" style="max-width:760px;margin:0 auto;padding:clamp(48px,7vw,72px) 20px 0;scroll-margin-top:160px"><h2 class="h2" style="margin-bottom:12px">{{ p_ship.title }}</h2>{{ p_ship.body }}</section>{%- endif -%}
+{%- if p_privacy -%}<section id="privacy" class="policy rte" style="max-width:760px;margin:0 auto;padding:clamp(48px,7vw,72px) 20px 0;scroll-margin-top:160px"><h2 class="h2" style="margin-bottom:12px">{{ p_privacy.title }}</h2>{{ p_privacy.body }}</section>{%- endif -%}
+<section id="company" class="policy rte" style="max-width:760px;margin:0 auto;padding:clamp(48px,7vw,72px) 20px clamp(56px,8vw,88px);scroll-margin-top:160px">
+  <h2 class="h2" style="margin-bottom:12px">Στοιχεία επιχείρησης</h2>
+  {%- if p_contact -%}{{ p_contact.body }}{%- else -%}<p><a href="/policies/contact-information">Στοιχεία επικοινωνίας</a></p>{%- endif -%}
+</section>
+{% schema %}
+{ "name": "Νομικά", "settings": [] }
+{% endschema %}

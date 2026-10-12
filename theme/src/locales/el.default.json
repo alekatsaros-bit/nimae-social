@@ -1,0 +1,14 @@
+{
+ "general": {
+  "password_page": {
+   "login_form_heading": "Είσοδος",
+   "login_password_button": "Είσοδος"
+  }
+ },
+ "products": {
+  "product": {
+   "add_to_cart": "Προσθήκη στο καλάθι",
+   "sold_out": "Εξαντλήθηκε"
+  }
+ }
+}

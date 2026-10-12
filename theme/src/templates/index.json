@@ -1,0 +1,243 @@
+{
+ "sections": {
+  "hero": {
+   "type": "home-hero",
+   "settings": {
+    "image_link": "/collections/all"
+   }
+  },
+  "trust": {
+   "type": "home-trust",
+   "settings": {},
+   "blocks": {
+    "item-1": {
+     "type": "item",
+     "settings": {
+      "text": "Βιολογικό βαμβάκι"
+     }
+    },
+    "item-2": {
+     "type": "item",
+     "settings": {
+      "text": "Stanley/Stella, μέλος Fair Wear"
+     }
+    },
+    "item-3": {
+     "type": "item",
+     "settings": {
+      "text": "Επιστροφή εντός 14 ημερών"
+     }
+    },
+    "item-4": {
+     "type": "item",
+     "settings": {
+      "text": "Γυναικεία, ανδρικά, παιδικά"
+     }
+    }
+   },
+   "block_order": [
+    "item-1",
+    "item-2",
+    "item-3",
+    "item-4"
+   ]
+  },
+  "favs": {
+   "type": "home-favourites",
+   "settings": {
+    "heading": "Τα αγαπημένα μας"
+   },
+   "blocks": {
+    "tab-1": {
+     "type": "tab",
+     "settings": {
+      "label": "Γυναικεία",
+      "collection": "gynaikeia"
+     }
+    },
+    "tab-2": {
+     "type": "tab",
+     "settings": {
+      "label": "Ανδρικά",
+      "collection": "andrika"
+     }
+    },
+    "tab-3": {
+     "type": "tab",
+     "settings": {
+      "label": "Νέα",
+      "newest": true
+     }
+    }
+   },
+   "block_order": [
+    "tab-1",
+    "tab-2",
+    "tab-3"
+   ]
+  },
+  "tiles": {
+   "type": "home-tiles",
+   "settings": {
+    "banner_link": "/collections/paidika"
+   },
+   "blocks": {
+    "tile-1": {
+     "type": "tile",
+     "settings": {
+      "label": "Γυναικεία",
+      "link": "/collections/gynaikeia",
+      "fallback": "tile-women.jpg"
+     }
+    },
+    "tile-2": {
+     "type": "tile",
+     "settings": {
+      "label": "Ανδρικά",
+      "link": "/collections/andrika",
+      "fallback": "tile-men.jpg"
+     }
+    }
+   },
+   "block_order": [
+    "tile-1",
+    "tile-2"
+   ]
+  },
+  "cats": {
+   "type": "home-categories",
+   "settings": {
+    "heading": "Ανά κατηγορία"
+   },
+   "blocks": {
+    "cat-1": {
+     "type": "cat",
+     "settings": {
+      "label": "Φούτερ",
+      "link": "/collections/%CF%86%CE%BF%CF%8D%CF%84%CE%B5%CF%81",
+      "fallback": "cat-fouter.jpg"
+     }
+    },
+    "cat-2": {
+     "type": "cat",
+     "settings": {
+      "label": "Με κουκούλα",
+      "link": "/collections/%CF%86%CE%BF%CF%8D%CF%84%CE%B5%CF%81",
+      "fallback": "cat-hoodie.jpg"
+     }
+    },
+    "cat-3": {
+     "type": "cat",
+     "settings": {
+      "label": "T-shirts",
+      "link": "/collections/%CE%BC%CF%80%CE%BB%CE%BF%CF%8D%CE%B6%CE%B5%CF%82",
+      "fallback": "cat-tshirt.jpg"
+     }
+    },
+    "cat-4": {
+     "type": "cat",
+     "settings": {
+      "label": "Μακρυμάνικα",
+      "link": "/collections/%CE%BC%CF%80%CE%BB%CE%BF%CF%8D%CE%B6%CE%B5%CF%82",
+      "fallback": "cat-makrymaniko.jpg"
+     }
+    },
+    "cat-5": {
+     "type": "cat",
+     "settings": {
+      "label": "Παντελόνια",
+      "link": "/collections/%CF%80%CE%B1%CE%BD%CF%84%CE%B5%CE%BB%CF%8C%CE%BD%CE%B9%CE%B1-%CF%83%CE%BF%CF%81%CF%84%CF%82",
+      "fallback": "cat-panteloni.jpg"
+     }
+    },
+    "cat-6": {
+     "type": "cat",
+     "settings": {
+      "label": "Μπουφάν",
+      "link": "/collections/%CE%B1%CE%BE%CE%B5%CF%83%CE%BF%CF%85%CE%AC%CF%81",
+      "fallback": "cat-mpoufan.jpg"
+     }
+    }
+   },
+   "block_order": [
+    "cat-1",
+    "cat-2",
+    "cat-3",
+    "cat-4",
+    "cat-5",
+    "cat-6"
+   ]
+  },
+  "mark": {
+   "type": "home-mark",
+   "settings": {
+    "link": "/pages/istoria"
+   }
+  },
+  "philosophy": {
+   "type": "home-philosophy",
+   "settings": {
+    "link": "/pages/istoria"
+   }
+  },
+  "guides": {
+   "type": "home-guides",
+   "settings": {},
+   "blocks": {
+    "guide-1": {
+     "type": "guide",
+     "settings": {
+      "label": "Υλικά",
+      "link": "/pages/istoria#materials",
+      "fallback": "guide-materials.jpg"
+     }
+    },
+    "guide-2": {
+     "type": "guide",
+     "settings": {
+      "label": "Οδηγός μεγεθών",
+      "link": "/pages/megethi",
+      "fallback": "guide-sizes.jpg"
+     }
+    },
+    "guide-3": {
+     "type": "guide",
+     "settings": {
+      "label": "Φροντίδα ρούχων",
+      "link": "/pages/voitheia#care",
+      "fallback": "guide-care.jpg"
+     }
+    },
+    "guide-4": {
+     "type": "guide",
+     "settings": {
+      "label": "Εταιρικές παραγγελίες",
+      "link": "/pages/contact#company",
+      "fallback": "guide-business.jpg"
+     }
+    }
+   },
+   "block_order": [
+    "guide-1",
+    "guide-2",
+    "guide-3",
+    "guide-4"
+   ]
+  },
+  "newsletter": {
+   "type": "newsletter",
+   "settings": {}
+  }
+ },
+ "order": [
+  "hero",
+  "trust",
+  "favs",
+  "tiles",
+  "cats",
+  "mark",
+  "philosophy",
+  "guides",
+  "newsletter"
+ ]
+}

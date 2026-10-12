@@ -1,0 +1,6 @@
+{%- comment -%} image (image_picker value) or fallback (theme asset filename); style; sizes {%- endcomment -%}
+{%- if image != blank -%}
+  {{ image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,700,1000,1400', sizes: sizes, alt: alt, style: style }}
+{%- elsif fallback != blank -%}
+  <img src="{{ fallback | asset_url }}" alt="{{ alt | escape }}" loading="lazy" width="1600" height="1600" style="{{ style }}">
+{%- endif -%}

@@ -1,0 +1,23 @@
+<section class="wrap-m" style="padding:clamp(24px,5vw,48px) 20px 56px;display:flex;flex-direction:column;gap:20px">
+  <h1 class="h1">Αναζήτηση</h1>
+  <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:8px;max-width:640px">
+    <label for="search-q" class="visually-hidden">Αναζήτηση</label>
+    <input id="search-q" class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Αναζήτηση ρούχων">
+    <input type="hidden" name="type" value="product">
+    <button class="btn" type="submit">Αναζήτηση</button>
+  </form>
+  {%- if search.performed -%}
+    {%- paginate search.results by 48 -%}
+    <p class="muted" style="margin:0">{{ search.results_count }} αποτελέσματα για «{{ search.terms | escape }}»</p>
+    <div class="grid">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- else -%}<a href="{{ item.url }}" class="card"><span class="card__name">{{ item.title }}</span></a>{%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}<div style="text-align:center">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "Αναζήτηση", "settings": [] }
+{% endschema %}

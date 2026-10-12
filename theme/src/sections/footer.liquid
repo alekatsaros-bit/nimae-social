@@ -1,0 +1,28 @@
+{%- assign email = settings.contact_email -%}
+<footer class="site-footer">
+  <div class="site-footer__cols">
+    <div style="grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px">
+      <span class="serif" style="font-size:32px;line-height:36px">{{ shop.name }}</span>
+      <span style="display:flex;gap:20px;align-items:baseline;flex-wrap:wrap">
+        {%- if settings.instagram != blank -%}<a href="{{ settings.instagram }}" style="text-decoration:underline" rel="noopener" target="_blank">Instagram</a>{%- endif -%}
+        {%- if email != blank -%}<a href="mailto:{{ email }}" style="text-decoration:underline">{{ email }}</a>{%- endif -%}
+      </span>
+    </div>
+    <div class="site-footer__col"><span style="font-weight:500">Κατάστημα</span>
+      <a href="/collections/all">Όλα τα ρούχα</a><a href="/collections/gynaikeia">Γυναικεία</a><a href="/collections/andrika">Ανδρικά</a><a href="/collections/paidika">Παιδικά</a><a href="/collections/all?sort_by=created-descending">Νέα</a>
+    </div>
+    <div class="site-footer__col"><span style="font-weight:500">Βοήθεια</span>
+      <a href="/pages/megethi">Οδηγός μεγεθών</a><a href="/pages/voitheia#shipping">Αποστολές</a><a href="/pages/voitheia#returns">Επιστροφές</a><a href="/pages/voitheia#faq">Συχνές ερωτήσεις</a><a href="/pages/contact">Επικοινωνία</a>
+    </div>
+    <div class="site-footer__col"><span style="font-weight:500">{{ shop.name }}</span>
+      <a href="/pages/istoria">Η ιστορία μας</a><a href="/pages/istoria#materials">Υλικά</a><a href="/pages/voitheia#care">Φροντίδα ρούχων</a><a href="/pages/contact#company">Εταιρικές παραγγελίες</a>
+    </div>
+    <div class="site-footer__col"><span style="font-weight:500">Νομικά</span>
+      <a href="/pages/nomika#terms">Όροι πώλησης</a><a href="/pages/nomika#privacy">Πολιτική απορρήτου</a><a href="/pages/nomika#returns-policy">Πολιτική επιστροφών</a><a href="/pages/nomika#withdrawal">Υπαναχώρηση από τη σύμβαση εδώ</a>
+    </div>
+  </div>
+  <div class="site-footer__legal">© {{ 'now' | date: '%Y' }} {{ shop.name }} · <a href="/pages/nomika#company" style="text-decoration:underline">Στοιχεία επιχείρησης</a> · Πληρωμή με κάρτα, Apple Pay, Google Pay, IRIS ή κατάθεση σε τράπεζα</div>
+</footer>
+{% schema %}
+{ "name": "Υποσέλιδο", "settings": [] }
+{% endschema %}

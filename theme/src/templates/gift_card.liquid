@@ -1,0 +1,12 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Δωροκάρτα · {{ shop.name }}</title>{{ 'nimae.css' | asset_url | stylesheet_tag }}{{ content_for_header }}</head>
+<body><main class="pw">
+<span class="serif" style="font-size:40px;color:var(--clay)">{{ shop.name }}</span>
+<h1 class="serif" style="margin:0">Δωροκάρτα {{ gift_card.initial_value | money }}</h1>
+{%- if gift_card.enabled == false or gift_card.expired -%}<p>Η δωροκάρτα δεν είναι ενεργή.</p>{%- endif -%}
+<p>Υπόλοιπο: {{ gift_card.balance | money }}</p>
+<p style="font-size:22px;letter-spacing:.1em">{{ gift_card.code | format_code }}</p>
+<a class="btn" href="{{ shop.url }}">Στο κατάστημα</a>
+</main></body></html>

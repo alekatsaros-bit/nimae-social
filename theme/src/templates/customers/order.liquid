@@ -1,0 +1,7 @@
+<section style="max-width:520px;margin:0 auto;padding:clamp(32px,6vw,64px) 20px;display:flex;flex-direction:column;gap:16px">
+  <a class="link" href="{{ routes.account_url }}">Πίσω στον λογαριασμό</a>
+  <h1 class="h1">Παραγγελία {{ order.name }}</h1>
+  <p class="muted">{{ order.created_at | date: '%d/%m/%Y' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+  {%- for li in order.line_items -%}<p>{{ li.title }} × {{ li.quantity }} · {{ li.final_line_price | money }}</p>{%- endfor -%}
+  <p><strong>Σύνολο: {{ order.total_price | money }}</strong></p>
+</section>

@@ -1,0 +1,10 @@
+<article style="max-width:760px;margin:0 auto;padding:clamp(24px,5vw,48px) 20px 56px;display:flex;flex-direction:column;gap:16px">
+  <nav class="crumbs" aria-label="Διαδρομή"><a href="{{ routes.root_url }}">Αρχική</a> / <a href="{{ blog.url }}">{{ blog.title }}</a></nav>
+  <h1 class="h1">{{ article.title }}</h1>
+  <span class="muted" style="font-size:13px">{{ article.published_at | date: '%d/%m/%Y' }}</span>
+  {%- if article.image -%}{{ article.image | image_url: width: 1400 | image_tag: alt: article.title, style: 'width:100%;height:auto;border-radius:4px' }}{%- endif -%}
+  <div class="rte prose">{{ article.content }}</div>
+</article>
+{% schema %}
+{ "name": "Άρθρο", "settings": [] }
+{% endschema %}

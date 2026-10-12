@@ -1,0 +1,130 @@
+{%- liquid
+  assign parts = product.title | split: ', '
+  assign name = parts.first
+  assign sub = product.title | remove_first: name | remove_first: ', '
+  assign first_char = sub | slice: 0 | upcase
+  assign rest = sub | slice: 1, 300
+
+  assign desc = product.description
+  assign size_split = desc | split: '<h3>Οδηγός μεγεθών</h3>'
+  assign body = size_split.first
+  assign size_html = ''
+  if size_split.size > 1
+    assign size_html = size_split.last
+  endif
+  assign intro = body | split: '</p>' | first | append: '</p>'
+  assign details = body | remove_first: intro
+
+  assign material = ''
+  if body contains 'Υλικό:</strong>'
+    assign material = body | split: 'Υλικό:</strong>' | last | split: '</p>' | first | strip_html | strip
+  endif
+  assign weight = ''
+  if body contains 'Βάρος:</strong>'
+    assign weight = body | split: 'Βάρος:</strong>' | last | split: '</p>' | first | strip_html | strip
+  endif
+
+  assign eyebrow = ''
+  if product.tags contains 'Παιδικά'
+    assign eyebrow = 'Παιδικά'
+  elsif product.tags contains 'Γυναικεία'
+    assign eyebrow = 'Γυναικεία'
+  elsif product.tags contains 'Ανδρικά'
+    assign eyebrow = 'Ανδρικά'
+  else
+    assign eyebrow = 'Unisex'
+  endif
+  if product.tags contains 'vintage'
+    assign eyebrow = eyebrow | append: ' · Vintage'
+  elsif product.tags contains 'oversized'
+    assign eyebrow = eyebrow | append: ' · Oversized'
+  endif
+
+  assign colour_index = nil
+  assign size_index = nil
+  for opt in product.options_with_values
+    if opt.name == 'Χρώμα'
+      assign colour_index = forloop.index0
+    elsif opt.name == 'Μέγεθος'
+      assign size_index = forloop.index0
+    endif
+  endfor
+  assign current = product.selected_or_first_available_variant
+-%}
+<nav class="crumbs wrap-m" aria-label="Διαδρομή" style="padding:12px 20px 0"><a href="{{ routes.root_url }}">Αρχική</a> / <a href="/collections/all">Όλα τα ρούχα</a> / {{ name }}</nav>
+
+<section class="pdp" data-product data-colour-index="{{ colour_index }}" data-size-index="{{ size_index }}">
+  <div class="pdp__gallery" data-gallery>
+    {%- for m in product.media -%}
+      {%- assign src = m.preview_image.src | default: '' -%}
+      {%- if src contains 'nimae-model' -%}{%- continue -%}{%- endif -%}
+      {%- assign key = src | split: '/' | last | split: '?' | first | remove: '-mprosta.jpg' | remove: '-piso.jpg' | remove: '-plagia.jpg' | remove: '.jpg' | remove: '.png' -%}
+      <img src="{{ m.preview_image | image_url: width: 1000 }}" srcset="{{ m.preview_image | image_url: width: 500 }} 500w, {{ m.preview_image | image_url: width: 800 }} 800w, {{ m.preview_image | image_url: width: 1200 }} 1200w" sizes="(min-width: 1000px) 30vw, 85vw" alt="{{ m.alt | escape }}" data-key="{{ key }}" width="1000" height="1250"{% unless forloop.first %} loading="lazy"{% endunless %}>
+    {%- endfor -%}
+  </div>
+
+  <div class="pdp__info">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="eyebrow" style="color:var(--olive)">{{ eyebrow }}</span>
+      <h1 class="serif" style="margin:0;font-size:clamp(32px,6vw,40px);line-height:1.1">{{ name }}</h1>
+      {%- if sub != blank -%}<span class="muted">{{ first_char }}{{ rest }}</span>{%- endif -%}
+      <span style="font-size:22px;line-height:28px;margin-top:4px" data-price>{{ current.price | money }}</span>
+      <span class="muted" style="font-size:13px">Δωρεάν αποστολή από 70 €.</span>
+    </div>
+    <div class="muted rte">{{ intro }}</div>
+
+    {%- form 'product', product, class: 'product-form', novalidate: 'novalidate' -%}
+      <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+      {%- unless product.has_only_default_variant -%}
+        {%- for opt in product.options_with_values -%}
+          {%- if opt.name == 'Χρώμα' -%}
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:14px;font-weight:500">Χρώμα: <span data-colour-label>{{ opt.selected_value }}</span></span>
+            <div style="display:flex;gap:10px;flex-wrap:wrap" role="group" aria-label="Χρώμα">
+              {%- for v in opt.values -%}
+                {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
+                <button type="button" class="swatch-btn" data-option="{{ forloop.parentloop.index0 }}" data-value="{{ v | escape }}" aria-label="{{ v | escape }}" title="{{ v | escape }}" aria-pressed="{% if v == opt.selected_value %}true{% else %}false{% endif %}"><span style="background:{{ hx }}"></span></button>
+              {%- endfor -%}
+            </div>
+          </div>
+          {%- else -%}
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;font-size:14px"><span style="font-weight:500">{{ opt.name }}</span>{% if opt.name == 'Μέγεθος' %}<a href="#size-guide" data-open-size style="text-decoration:underline">Οδηγός μεγεθών</a>{% endif %}</div>
+            <div class="sizes" role="group" aria-label="{{ opt.name }}">
+              {%- for v in opt.values -%}
+                <button type="button" class="size-btn" data-option="{{ forloop.parentloop.index0 }}" data-value="{{ v | escape }}" aria-pressed="false">{{ v }}</button>
+              {%- endfor -%}
+            </div>
+            {%- if opt.name == 'Μέγεθος' and product.tags contains 'oversized' -%}<span class="muted" style="font-size:13px">Oversized γραμμή. Για πιο κανονική εφαρμογή, πάρτε ένα νούμερο μικρότερο.</span>{%- endif -%}
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endunless -%}
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <button type="submit" name="add" class="btn btn--clay" style="min-height:52px" data-add{% unless product.available %} disabled{% endunless %}>{% if product.available %}{% if product.has_only_default_variant %}Προσθήκη στο καλάθι{% else %}Επιλέξτε μέγεθος{% endif %}{% else %}Εξαντλήθηκε{% endif %}</button>
+        <span style="font-size:14px" data-eta></span>
+        <p role="alert" class="notice notice--error" data-error hidden></p>
+      </div>
+    {%- endform -%}
+
+    <div class="facts">
+      {%- if material != blank -%}<span>{{ material | truncatewords: 6, '' }}</span>{%- endif -%}
+      {%- if weight != blank -%}<span>{{ weight }}</span>{%- endif -%}
+      <span>Stanley/Stella, μέλος Fair Wear</span>
+      <span>Το ν μπαίνει κατά την παραγγελία</span>
+    </div>
+
+    <div class="acc">
+      {%- if details != blank -%}<details open><summary>Λεπτομέρειες, υλικό και φροντίδα</summary><div class="rte">{{ details }}</div></details>{%- endif -%}
+      {%- if size_html != blank -%}<details id="size-guide"><summary>Οδηγός μεγεθών</summary><div class="rte"><div class="table-scroll">{{ size_html }}</div><p><a href="/pages/megethi" style="text-decoration:underline">Όλοι οι οδηγοί μεγεθών</a></p></div></details>{%- endif -%}
+      <details><summary>Αποστολή και επιστροφές</summary><div class="rte"><p>Το ν προστίθεται μετά την παραγγελία σας και το ρούχο φτάνει σε 5 έως 12 εργάσιμες. Αποστολή δωρεάν από 70 €, αλλιώς 4,90 €. Έχετε 14 ημέρες για να υπαναχωρήσετε, χωρίς αιτιολογία. <a href="/pages/voitheia#shipping" style="text-decoration:underline">Αποστολές και επιστροφές</a></p></div></details>
+    </div>
+  </div>
+  <script type="application/json" data-product-json>
+    {"variants":[{%- for v in product.variants -%}{"id":{{ v.id }},"available":{{ v.available }},"price":{{ v.price | money | json }},"options":{{ v.options | json }},"key":{{ v.featured_media.preview_image.src | default: '' | split: '/' | last | split: '?' | first | remove: '-mprosta.jpg' | remove: '-piso.jpg' | remove: '-plagia.jpg' | remove: '.jpg' | json }}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]}
+  </script>
+</section>
+
+{% schema %}
+{ "name": "Προϊόν", "settings": [] }
+{% endschema %}

@@ -1,0 +1,62 @@
+{%- comment -%} Renders a product card. Skips photos of models (files named nimae-model-*). {%- endcomment -%}
+{%- liquid
+  assign img1 = nil
+  assign img2 = nil
+  for m in product.media
+    assign src = m.preview_image.src | default: ''
+    if src contains 'nimae-model'
+      continue
+    endif
+    if img1 == nil
+      assign img1 = m.preview_image
+    elsif img2 == nil
+      assign img2 = m.preview_image
+      break
+    endif
+  endfor
+  assign parts = product.title | split: ', '
+  assign name = parts.first
+  assign sub = product.title | remove_first: name | remove_first: ', '
+  if sub == blank
+    assign sub = product.type
+  endif
+  assign first_char = sub | slice: 0 | upcase
+  assign rest = sub | slice: 1, 300
+  assign colour_option = product.options_with_values | where: 'name', 'Χρώμα' | first
+  assign kind = 'other'
+  case product.type
+    when 'Φούτερ', 'Hoodie', 'Sweatshirt'
+      assign kind = 'fouter'
+    when 'T-shirt', 'Μπλουζάκια', 'Polo', 'Αμάνικο', 'Bodysuit'
+      assign kind = 'tops'
+    when 'Πουκάμισο'
+      assign kind = 'shirts'
+    when 'Παντελόνια', 'Σορτς'
+      assign kind = 'pants'
+    when 'Μπουφάν'
+      assign kind = 'jackets'
+  endcase
+-%}
+<div class="card" data-kind="{{ kind }}" data-price="{{ product.price }}" data-created="{{ product.created_at | date: '%s' }}" data-index="{{ index | default: 0 }}">
+  <a href="{{ product.url }}" class="card__media" tabindex="-1" aria-hidden="true">
+    {%- if img1 -%}
+      {{ img1 | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 900px) 25vw, 45vw', alt: '' }}
+      {%- if img2 -%}{{ img2 | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 900px) 25vw, 45vw', alt: '' }}{%- endif -%}
+    {%- endif -%}
+    {%- if product.tags contains 'Νέο' -%}<span class="card__badge">Νέο</span>{%- endif -%}
+  </a>
+  {%- if colour_option and colour_option.values.size > 1 -%}
+  <div class="swatches" aria-label="{{ colour_option.values.size }} χρώματα">
+    {%- for v in colour_option.values limit: 5 -%}
+      {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
+      <span class="swatch" title="{{ v | escape }}" style="background:{{ hx }}"></span>
+    {%- endfor -%}
+    {%- if colour_option.values.size > 5 -%}<span class="swatches__more">+{{ colour_option.values.size | minus: 5 }}</span>{%- endif -%}
+  </div>
+  {%- endif -%}
+  <a href="{{ product.url }}" style="display:flex;flex-direction:column;gap:2px">
+    <span class="card__name">{{ name }}</span>
+    <span class="card__sub">{{ first_char }}{{ rest }}</span>
+    <span class="card__price">{% if product.price_varies %}από {% endif %}{{ product.price | money }}</span>
+  </a>
+</div>

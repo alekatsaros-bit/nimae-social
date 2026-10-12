@@ -1,0 +1,37 @@
+{%- assign menu = linklists[section.settings.menu] -%}
+<header class="site-header">
+  <div class="site-header__bar">
+    <div style="display:flex;align-items:center">
+      <button type="button" class="icon-btn" aria-label="Αναζήτηση στο κατάστημα" aria-expanded="false" aria-controls="search-panel" data-search-toggle>{% render 'icon', name: 'search' %}</button>
+    </div>
+    <a href="{{ routes.root_url }}" class="site-header__logo">{{ shop.name }}</a>
+    <div style="display:flex;align-items:center;justify-content:flex-end">
+      <a href="{{ section.settings.contact_url | default: '/pages/contact' }}" class="icon-btn" aria-label="Επικοινωνία">{% render 'icon', name: 'mail' %}</a>
+      <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="Καλάθι, {{ cart.item_count }} προϊόντα">{% render 'icon', name: 'bag' %}{% if cart.item_count > 0 %}<span class="count" data-cart-count>{{ cart.item_count }}</span>{% endif %}</a>
+    </div>
+  </div>
+  <nav class="site-nav" aria-label="Κύριο μενού">
+    {%- if menu.links.size > 0 -%}
+      {%- for link in menu.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>{%- endfor -%}
+    {%- else -%}
+      <a href="/collections/all">Όλα τα ρούχα</a><a href="/collections/gynaikeia">Γυναικεία</a><a href="/collections/andrika">Ανδρικά</a><a href="/collections/paidika">Παιδικά</a><a href="/collections/all?sort_by=created-descending">Νέα</a><a href="/pages/istoria">Η ιστορία μας</a>
+    {%- endif -%}
+  </nav>
+  <div class="search-panel" id="search-panel" hidden>
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <label for="header-q" class="visually-hidden">Αναζήτηση</label>
+      <input id="header-q" class="input" type="search" name="q" placeholder="Αναζήτηση ρούχων" value="{{ search.terms | escape }}">
+      <input type="hidden" name="type" value="product">
+      <button class="btn" type="submit">Αναζήτηση</button>
+    </form>
+  </div>
+</header>
+{% schema %}
+{
+  "name": "Κεφαλίδα",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Μενού", "default": "main-menu" },
+    { "type": "url", "id": "contact_url", "label": "Σύνδεσμος επικοινωνίας" }
+  ]
+}
+{% endschema %}
