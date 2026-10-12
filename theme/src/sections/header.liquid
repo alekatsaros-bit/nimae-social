@@ -4,7 +4,7 @@
     <div style="display:flex;align-items:center">
       <button type="button" class="icon-btn" aria-label="Αναζήτηση στο κατάστημα" aria-expanded="false" aria-controls="search-panel" data-search-toggle>{% render 'icon', name: 'search' %}</button>
     </div>
-    <a href="{{ routes.root_url }}" class="site-header__logo">{{ shop.name }}</a>
+    <a href="{{ routes.root_url }}" class="site-header__logo">{% render 'logo' %}</a>
     <div style="display:flex;align-items:center;justify-content:flex-end">
       <a href="{{ section.settings.contact_url | default: '/pages/contact' }}" class="icon-btn" aria-label="Επικοινωνία">{% render 'icon', name: 'mail' %}</a>
       <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="Καλάθι, {{ cart.item_count }} προϊόντα">{% render 'icon', name: 'bag' %}{% if cart.item_count > 0 %}<span class="count" data-cart-count>{{ cart.item_count }}</span>{% endif %}</a>
