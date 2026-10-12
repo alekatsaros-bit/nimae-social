@@ -95,7 +95,7 @@
                 <button type="button" class="size-btn" data-option="{{ forloop.parentloop.index0 }}" data-value="{{ v | escape }}" aria-pressed="false">{{ v }}</button>
               {%- endfor -%}
             </div>
-            {%- if opt.name == 'Μέγεθος' and product.tags contains 'oversized' -%}<span class="muted" style="font-size:13px">Oversized γραμμή. Για πιο κανονική εφαρμογή, πάρτε ένα νούμερο μικρότερο.</span>{%- endif -%}
+            {%- if opt.name == 'Μέγεθος' and product.tags contains 'oversized' -%}<span class="muted" style="font-size:13px">Oversized γραμμή. Για πιο κανονική εφαρμογή, πάρτε ένα νούμερο μικρότερο.</span>{%- elsif opt.name == 'Μέγεθος' and product.tags contains 'Γυναικεία επιλογή' -%}<span class="muted" style="font-size:13px">Unisex γραμμή. Για πιο κοντινή εφαρμογή, διαλέξτε ένα νούμερο μικρότερο από το συνηθισμένο σας.</span>{%- endif -%}
           </div>
           {%- endif -%}
         {%- endfor -%}
