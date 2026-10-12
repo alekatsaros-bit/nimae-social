@@ -160,14 +160,11 @@ button.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(
 .card__media img[data-back]{display:none}
 .swatches button.swatch:nth-of-type(n+7){display:none}
 
-/* wordmark: Young Serif + cream ν on the N */
-.logo-word{font-family:'Young Serif',Georgia,serif;font-weight:400;color:var(--forest);-webkit-text-stroke:.035em currentColor;paint-order:stroke fill;letter-spacing:-.01em;line-height:1;display:inline-block;white-space:nowrap}
+/* wordmark: Young Serif, N = stem + garment ν */
+.logo-word{font-family:'Young Serif',Georgia,serif;font-weight:400;font-style:normal;color:var(--forest);letter-spacing:-.01em;line-height:1.1;display:inline-block;white-space:nowrap}
 .logo-word--dark{color:var(--bg)}
-.logo-n{position:relative;display:inline-block}
-.logo-nu{position:absolute;left:42%;top:34%;width:21%;height:auto;pointer-events:none}
-.logo-nu--green,.logo-word--dark .logo-nu--cream{display:none}
-.logo-word--dark .logo-nu--green{display:block}
+.logo-n{position:relative;display:inline-block;width:1em}
+.logo-n img{position:absolute;left:.26em;bottom:.2em;height:.78em;width:auto;pointer-events:none}
 .site-header__logo{font-size:52px;line-height:56px;color:var(--forest)}
 .site-header__logo:hover{color:var(--forest)}
 @media(max-width:600px){.site-header__logo{font-size:38px;line-height:44px}}
-.logo-word{font-style:normal}
