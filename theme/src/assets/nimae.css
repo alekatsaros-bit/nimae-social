@@ -163,8 +163,8 @@ button.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(
 /* wordmark: Young Serif, N = stem + garment ν */
 .logo-word{font-family:'Young Serif',Georgia,serif;font-weight:400;font-style:normal;color:var(--forest);letter-spacing:-.01em;line-height:1.1;display:inline-block;white-space:nowrap}
 .logo-word--dark{color:var(--bg)}
-.logo-n{position:relative;display:inline-block;width:1em}
-.logo-n img{position:absolute;left:.26em;bottom:.2em;height:.78em;width:auto;pointer-events:none}
+.logo-n{position:relative;display:inline-block;padding-right:.62em}
+.logo-n img{position:absolute;left:.38em;bottom:.255em;height:.8em;width:auto;transform:rotate(-14deg);transform-origin:50% 100%;pointer-events:none}
 .site-header__logo{font-size:52px;line-height:56px;color:var(--forest)}
 .site-header__logo:hover{color:var(--forest)}
 @media(max-width:600px){.site-header__logo{font-size:38px;line-height:44px}}
