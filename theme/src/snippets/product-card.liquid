@@ -85,7 +85,7 @@
           endfor
         endif
       -%}
-      {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
+      {%- capture hx -%}{% render 'swatch-hex', pid: product.id, name: v %}{%- endcapture -%}{%- assign hx = hx | strip -%}{%- if hx == blank -%}{%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}{%- endif -%}
       <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-hex="{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}></button>
     {%- endfor -%}
     {%- if colour_option.values.size > 6 -%}<a href="{{ product.url }}" class="swatches__more" data-more>+{{ colour_option.values.size | minus: 6 }}</a>{%- endif -%}

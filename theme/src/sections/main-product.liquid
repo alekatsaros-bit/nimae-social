@@ -82,7 +82,7 @@
             <span style="font-size:14px;font-weight:500">Χρώμα: <span data-colour-label>{{ opt.selected_value }}</span></span>
             <div style="display:flex;gap:10px;flex-wrap:wrap" role="group" aria-label="Χρώμα">
               {%- for v in opt.values -%}
-                {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
+                {%- capture hx -%}{% render 'swatch-hex', pid: product.id, name: v %}{%- endcapture -%}{%- assign hx = hx | strip -%}{%- if hx == blank -%}{%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}{%- endif -%}
                 <button type="button" class="swatch-btn" data-option="{{ forloop.parentloop.index0 }}" data-value="{{ v | escape }}" aria-label="{{ v | escape }}" title="{{ v | escape }}" aria-pressed="{% if v == opt.selected_value %}true{% else %}false{% endif %}"><span style="background:{{ hx }}"></span></button>
               {%- endfor -%}
             </div>
