@@ -2,7 +2,7 @@
   <div style="max-width:720px;margin:0 auto;padding:40px 20px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center">
     <h2 class="serif" style="margin:0;font-size:28px;line-height:34px">{{ section.settings.heading }}</h2>
     <p class="muted" style="margin:0">{{ section.settings.text }}</p>
-    {%- form 'customer', id: 'newsletter-form', style: 'display:flex;flex-wrap:wrap;gap:8px;width:100%;max-width:480px' -%}
+    {%- form 'customer', id: 'newsletter-form', class: 'signup-form' -%}
       {%- if form.posted_successfully? -%}
         <p role="status" style="margin:0;width:100%">Ευχαριστούμε. Είστε στη λίστα.</p>
       {%- else -%}

@@ -137,3 +137,6 @@ mark.todo{background:#F3D9A4;color:var(--ink);padding:0 4px;border-radius:2px}
 .policy h3{font-family:var(--serif);font-weight:500;font-size:22px;line-height:28px;margin:28px 0 8px}
 .policy p,.policy li{color:var(--muted)}
 .contact-form{display:flex;flex-direction:column;gap:16px}
+.signup-form{display:flex;flex-wrap:wrap;gap:8px;width:100%;max-width:480px;justify-content:center}
+.signup-form .input{flex:1 1 240px;min-width:0}
+.owner-form{display:flex;gap:8px;margin-top:12px}
