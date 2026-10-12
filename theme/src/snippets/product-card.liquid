@@ -1,19 +1,8 @@
-{%- comment -%} Renders a product card. Skips photos of models (files named nimae-model-*). {%- endcomment -%}
+{%- comment -%}
+  Product card. Skips photos of models (files named nimae-model-*).
+  Front/back per colour come from each colour's variant photo (…-mprosta) and the matching …-piso file.
+{%- endcomment -%}
 {%- liquid
-  assign img1 = nil
-  assign img2 = nil
-  for m in product.media
-    assign src = m.preview_image.src | default: ''
-    if src contains 'nimae-model'
-      continue
-    endif
-    if img1 == nil
-      assign img1 = m.preview_image
-    elsif img2 == nil
-      assign img2 = m.preview_image
-      break
-    endif
-  endfor
   assign parts = product.title | split: ', '
   assign name = parts.first
   assign sub = product.title | remove_first: name | remove_first: ', '
@@ -36,25 +25,74 @@
     when 'Μπουφάν'
       assign kind = 'jackets'
   endcase
+
+  # Fallback images: first two photos that are not model photos
+  assign img1 = nil
+  assign img2 = nil
+  for m in product.media
+    assign src = m.preview_image.src | default: ''
+    if src contains 'nimae-model'
+      continue
+    endif
+    if img1 == nil
+      assign img1 = m.preview_image
+    elsif img2 == nil
+      assign img2 = m.preview_image
+      break
+    endif
+  endfor
+
+  assign opt_key = 'option1'
+  if colour_option
+    assign opt_key = 'option' | append: colour_option.position
+  endif
+  assign start = product.selected_or_first_available_variant
+  if start.featured_media
+    assign img1 = start.featured_media.preview_image
+    assign k = img1.src | split: '/' | last | split: '?' | first | remove: '-mprosta.jpg' | remove: '.jpg'
+    assign kb = k | append: '-piso'
+    for m in product.media
+      assign src = m.preview_image.src | default: ''
+      if src contains kb
+        assign img2 = m.preview_image
+        break
+      endif
+    endfor
+  endif
 -%}
 <div class="card" data-kind="{{ kind }}" data-price="{{ product.price }}" data-created="{{ product.created_at | date: '%s' }}" data-index="{{ index | default: 0 }}">
-  <a href="{{ product.url }}" class="card__media" tabindex="-1" aria-hidden="true">
-    {%- if img1 -%}
-      {{ img1 | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 900px) 25vw, 45vw', alt: '' }}
-      {%- if img2 -%}{{ img2 | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360,540,720', sizes: '(min-width: 900px) 25vw, 45vw', alt: '' }}{%- endif -%}
-    {%- endif -%}
+  <a href="{{ start.url | default: product.url }}" class="card__media{% if img2 %} has-back{% endif %}" tabindex="-1" aria-hidden="true" data-card-link>
+    {%- if img1 -%}<img src="{{ img1 | image_url: width: 720 }}" alt="" loading="lazy" width="720" height="900" data-front>{%- endif -%}
+    {%- if img2 -%}<img src="{{ img2 | image_url: width: 720 }}" alt="" loading="lazy" width="720" height="900" data-back>{%- endif -%}
     {%- if product.tags contains 'Νέο' -%}<span class="card__badge">Νέο</span>{%- endif -%}
   </a>
   {%- if colour_option and colour_option.values.size > 1 -%}
-  <div class="swatches" aria-label="{{ colour_option.values.size }} χρώματα">
-    {%- for v in colour_option.values limit: 5 -%}
+  <div class="swatches" role="group" aria-label="Χρώματα">
+    {%- for v in colour_option.values limit: 6 -%}
+      {%- liquid
+        assign vv = product.variants | where: opt_key, v | first
+        assign f = nil
+        assign b = nil
+        if vv.featured_media
+          assign f = vv.featured_media.preview_image
+          assign k = f.src | split: '/' | last | split: '?' | first | remove: '-mprosta.jpg' | remove: '.jpg'
+          assign kb = k | append: '-piso'
+          for m in product.media
+            assign src = m.preview_image.src | default: ''
+            if src contains kb
+              assign b = m.preview_image
+              break
+            endif
+          endfor
+        endif
+      -%}
       {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
-      <span class="swatch" title="{{ v | escape }}" style="background:{{ hx }}"></span>
+      <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}{% if b %} data-back="{{ b | image_url: width: 720 }}"{% endif %}></button>
     {%- endfor -%}
-    {%- if colour_option.values.size > 5 -%}<span class="swatches__more">+{{ colour_option.values.size | minus: 5 }}</span>{%- endif -%}
+    {%- if colour_option.values.size > 6 -%}<a href="{{ product.url }}" class="swatches__more">+{{ colour_option.values.size | minus: 6 }}</a>{%- endif -%}
   </div>
   {%- endif -%}
-  <a href="{{ product.url }}" style="display:flex;flex-direction:column;gap:2px">
+  <a href="{{ start.url | default: product.url }}" style="display:flex;flex-direction:column;gap:2px" data-card-link>
     <span class="card__name">{{ name }}</span>
     <span class="card__sub">{{ first_char }}{{ rest }}</span>
     <span class="card__price">{% if product.price_varies %}από {% endif %}{{ product.price | money }}</span>

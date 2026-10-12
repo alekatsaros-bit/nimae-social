@@ -144,3 +144,11 @@ mark.todo{background:#F3D9A4;color:var(--ink);padding:0 4px;border-radius:2px}
 .card__media{background:var(--bg)}
 .card__media img,.pdp__gallery img,.cart-thumb{mix-blend-mode:multiply;background:transparent}
 .pdp__gallery{background:var(--bg)}
+/* card hover: swap front for back fully (no see-through with multiply) */
+.card__media img{transition:opacity .25s}
+.card__media img+img{opacity:0}
+.card:hover .card__media.has-back img:first-child,.card__media.has-back:focus-visible img:first-child{opacity:0}
+.card:hover .card__media.has-back img+img{opacity:1}
+@media(hover:none){.card:hover .card__media.has-back img:first-child{opacity:1}.card:hover .card__media.has-back img+img{opacity:0}}
+button.swatch{padding:0;cursor:pointer;width:22px;height:22px;box-shadow:0 0 0 2px var(--bg)}
+button.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--ink)}

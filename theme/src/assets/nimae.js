@@ -27,6 +27,27 @@
     });
   });
 
+
+  /* card swatches: switch the photo and link to that colour */
+  document.addEventListener('click', function (e) {
+    var sw = e.target.closest && e.target.closest('button.swatch');
+    if (!sw) return;
+    var card = sw.closest('.card'); if (!card) return;
+    var media = card.querySelector('.card__media');
+    var front = card.querySelector('img[data-front]'), back = card.querySelector('img[data-back]');
+    var f = sw.getAttribute('data-front'), b = sw.getAttribute('data-back');
+    if (f && front) { front.removeAttribute('srcset'); front.src = f; }
+    if (back) {
+      if (b) { back.src = b; media.classList.add('has-back'); } else { media.classList.remove('has-back'); }
+    } else if (b && media) {
+      var im = document.createElement('img'); im.src = b; im.alt = ''; im.setAttribute('data-back', ''); im.width = 720; im.height = 900;
+      media.insertBefore(im, front ? front.nextSibling : media.firstChild); media.classList.add('has-back');
+    }
+    var href = sw.getAttribute('data-href');
+    if (href) card.querySelectorAll('[data-card-link]').forEach(function (a) { a.href = href; });
+    card.querySelectorAll('button.swatch').forEach(function (o) { o.setAttribute('aria-pressed', o === sw ? 'true' : 'false'); });
+  });
+
   /* collection: category chips + sort (client side) */
   $$('[data-collection]').forEach(function (root) {
     var grid = $('[data-grid]', root); if (!grid) return;
@@ -99,7 +120,7 @@
     var nOptions = 0;
     optionButtons.forEach(function (b) { nOptions = Math.max(nOptions, +b.getAttribute('data-option') + 1); });
     var selected = [];
-    var first = variants.filter(function (v) { return v.available; })[0] || variants[0];
+    var first = variants.filter(function (v) { return String(v.id) === String(idInput.value); })[0] || variants.filter(function (v) { return v.available; })[0] || variants[0];
     for (var i = 0; i < nOptions; i++) selected[i] = null;
     if (ci !== '' && ci !== null && first) selected[+ci] = first.options[+ci];
     if (etaEl) etaEl.textContent = eta();
