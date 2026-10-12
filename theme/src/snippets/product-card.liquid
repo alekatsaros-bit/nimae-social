@@ -61,9 +61,8 @@
   endif
 -%}
 <div class="card" data-kind="{{ kind }}" data-price="{{ product.price }}" data-created="{{ product.created_at | date: '%s' }}" data-index="{{ index | default: 0 }}">
-  <a href="{{ start.url | default: product.url }}" class="card__media{% if img2 %} has-back{% endif %}" tabindex="-1" aria-hidden="true" data-card-link>
+  <a href="{{ start.url | default: product.url }}" class="card__media" tabindex="-1" aria-hidden="true" data-card-link>
     {%- if img1 -%}<img src="{{ img1 | image_url: width: 720 }}" alt="" loading="lazy" width="720" height="900" data-front>{%- endif -%}
-    {%- if img2 -%}<img src="{{ img2 | image_url: width: 720 }}" alt="" loading="lazy" width="720" height="900" data-back>{%- endif -%}
     {%- if product.tags contains 'Νέο' -%}<span class="card__badge">Νέο</span>{%- endif -%}
   </a>
   {%- if colour_option and colour_option.values.size > 1 -%}
@@ -87,7 +86,7 @@
         endif
       -%}
       {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
-      <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}{% if b %} data-back="{{ b | image_url: width: 720 }}"{% endif %}></button>
+      <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}></button>
     {%- endfor -%}
     {%- if colour_option.values.size > 6 -%}<a href="{{ product.url }}" class="swatches__more">+{{ colour_option.values.size | minus: 6 }}</a>{%- endif -%}
   </div>

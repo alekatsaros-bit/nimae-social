@@ -156,3 +156,5 @@ button.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(
 /* logo: Cormorant Garamond italic */
 .logo,.site-header__logo{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;letter-spacing:.005em}
 .site-header__logo{font-size:40px;line-height:44px}
+/* no back photo on hover */
+.card__media img[data-back]{display:none}
