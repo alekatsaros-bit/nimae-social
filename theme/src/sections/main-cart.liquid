@@ -38,7 +38,7 @@
           assign sb = item.product.title | remove_first: nm | remove_first: ', '
         -%}
         <div style="display:grid;grid-template-columns:clamp(96px,22vw,140px) 1fr;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)">
-          <a href="{{ item.url }}">{%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ nm | escape }}, {{ item.variant.title | escape }}" width="400" height="500" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:var(--bg2);display:block">{%- endif -%}</a>
+          <a href="{{ item.url }}">{%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ nm | escape }}, {{ item.variant.title | escape }}" width="400" height="500" loading="lazy" class="cart-thumb" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;display:block">{%- endif -%}</a>
           <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
             <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><a href="{{ item.url }}" style="font-weight:500">{{ nm }}</a><span>{{ item.final_line_price | money }}</span></div>
             {%- if sb != blank -%}<span class="muted" style="font-size:14px">{{ sb }}</span>{%- endif -%}
