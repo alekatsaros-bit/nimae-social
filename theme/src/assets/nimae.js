@@ -48,6 +48,38 @@
     card.querySelectorAll('button.swatch').forEach(function (o) { o.setAttribute('aria-pressed', o === sw ? 'true' : 'false'); });
   });
 
+
+  /* vary colours down each grid: no two neighbours in the same colour, prefer colours where the cream ν shows */
+  function hexRgb(h){ h=(h||'').replace('#',''); if(h.length!==6) return null; return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+  function lum(c){ return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255; }
+  function cdist(a,b){ if(!a||!b) return 200; var r=(a[0]+b[0])/2; return Math.sqrt((2+r/256)*Math.pow(a[0]-b[0],2)+4*Math.pow(a[1]-b[1],2)+(2+(255-r)/256)*Math.pow(a[2]-b[2],2)); }
+  function diversify(container){
+    var cards=[].slice.call(container.querySelectorAll('.card')).filter(function(c){ return !c.hidden; });
+    var prev=[], used={};
+    cards.forEach(function(card){
+      var sws=[].slice.call(card.querySelectorAll('button.swatch[data-front]'));
+      if(sws.length<2){ var only=card.querySelector('button.swatch'); prev.unshift(only?hexRgb(only.getAttribute('data-hex')):null); return; }
+      var best=null, bestScore=-1e9;
+      sws.forEach(function(sw, i){
+        var c=hexRgb(sw.getAttribute('data-hex')); if(!c) return;
+        var L=lum(c), score=0;
+        score += L<0.58 ? 120 : (L<0.68 ? 40 : -150);
+        score += Math.min(cdist(c,prev[0]),300)*0.9 + Math.min(cdist(c,prev[1]),300)*0.4 + Math.min(cdist(c,prev[2]),300)*0.2;
+        var key=sw.getAttribute('data-hex'); score -= (used[key]||0)*25;
+        if(L<0.12) score -= 40;
+        score -= i*2;
+        if(score>bestScore){ bestScore=score; best=sw; }
+      });
+      if(best){
+        var key=best.getAttribute('data-hex'); used[key]=(used[key]||0)+1;
+        var wrap=best.parentNode; if(wrap.firstChild!==best) wrap.insertBefore(best, wrap.firstChild);
+        best.click();
+        prev.unshift(hexRgb(key));
+      }
+    });
+  }
+  window.nimaeDiversify=diversify;
+
   /* collection: category chips + sort (client side) */
   $$('[data-collection]').forEach(function (root) {
     var grid = $('[data-grid]', root); if (!grid) return;
@@ -66,6 +98,7 @@
       sorted.forEach(function (c) { grid.appendChild(c); });
       if (countEl) countEl.textContent = shown + (shown === 1 ? ' προϊόν' : ' προϊόντα');
       if (emptyEl) emptyEl.hidden = shown !== 0;
+      diversify(grid);
     }
     $$('[data-kind-filter]', root).forEach(function (b) {
       b.addEventListener('click', function () {
@@ -81,6 +114,7 @@
         apply();
       });
     });
+    diversify(grid);
     /* hide chips with no products */
     $$('[data-kind-filter]', root).forEach(function (b) {
       var k = b.getAttribute('data-kind-filter');
@@ -195,6 +229,8 @@
     });
     render();
   });
+
+  $$('.scroller').forEach(function (sc) { diversify(sc); });
 
   /* product recommendations */
   $$('[data-recs]').forEach(function (el) {

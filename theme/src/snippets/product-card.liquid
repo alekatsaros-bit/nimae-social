@@ -67,7 +67,7 @@
   </a>
   {%- if colour_option and colour_option.values.size > 1 -%}
   <div class="swatches" role="group" aria-label="Χρώματα">
-    {%- for v in colour_option.values limit: 6 -%}
+    {%- for v in colour_option.values -%}
       {%- liquid
         assign vv = product.variants | where: opt_key, v | first
         assign f = nil
@@ -86,9 +86,9 @@
         endif
       -%}
       {%- capture hx -%}{% render 'colour-hex', name: v %}{%- endcapture -%}
-      <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}></button>
+      <button type="button" class="swatch" title="{{ v | escape }}" aria-label="{{ v | escape }}" aria-pressed="{% if v == start[opt_key] %}true{% else %}false{% endif %}" style="background:{{ hx }}" data-hex="{{ hx }}" data-href="{{ vv.url | default: product.url }}"{% if f %} data-front="{{ f | image_url: width: 720 }}"{% endif %}></button>
     {%- endfor -%}
-    {%- if colour_option.values.size > 6 -%}<a href="{{ product.url }}" class="swatches__more">+{{ colour_option.values.size | minus: 6 }}</a>{%- endif -%}
+    {%- if colour_option.values.size > 6 -%}<a href="{{ product.url }}" class="swatches__more" data-more>+{{ colour_option.values.size | minus: 6 }}</a>{%- endif -%}
   </div>
   {%- endif -%}
   <a href="{{ start.url | default: product.url }}" style="display:flex;flex-direction:column;gap:2px" data-card-link>

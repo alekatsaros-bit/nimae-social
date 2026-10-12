@@ -158,3 +158,4 @@ button.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(
 .site-header__logo{font-size:40px;line-height:44px}
 /* no back photo on hover */
 .card__media img[data-back]{display:none}
+.swatches button.swatch:nth-of-type(n+7){display:none}
